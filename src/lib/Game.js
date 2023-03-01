@@ -188,7 +188,7 @@ class Game {
     if (period <= 1) period = 1;
     let process = (this.now_week % period) - period / 2;
     let basic = Math.exp(0 - Math.pow(process, 2) / 5);
-    let diff = this.now_week / 500;
+    let diff = this.now_week / 1000;
     let total = basic + diff;
     if (total > 1) total = 1;
     this.P_NaturalInfect = total;
@@ -196,7 +196,7 @@ class Game {
 
   cal_P_ProtectVal() {
     if (this.protectStudyCount <= 0) this.P_ProtectVal = 0;
-    else this.P_ProtectVal = 1 / (1 + 10 / this.protectStudyCount);
+    else this.P_ProtectVal = 1 / (1 + 5 / this.protectStudyCount);
     this.Info_P_ProtectVal = (this.P_ProtectVal * 100).toFixed(0) + "%";
   }
 
@@ -274,7 +274,7 @@ class Game {
     this.tip_worksalary =
       this.WORKSALARY + this.workCount * this.WORKCOUNTBONUS;
     this.tip_nextProtectVal =
-      ((1 / (1 + 10 / (this.protectStudyCount + 1))) * 100).toFixed(0) + "%";
+      ((1 / (1 + 5 / (this.protectStudyCount + 1))) * 100).toFixed(0) + "%";
   }
 
   beInfected() {
@@ -283,6 +283,16 @@ class Game {
 
     if (this.now_resistance < this.RESITANCE_REQUIRE) {
       let t = Math.random();
+      if (this.debug)
+        console.log(
+          "t,range" +
+            t.toFixed(2) +
+            "," +
+            (
+              (this.RESITANCE_REQUIRE - this.now_resistance) /
+              this.RESITANCE_REQUIRE
+            ).toFixed(2)
+        );
       if (
         t <=
         (this.RESITANCE_REQUIRE - this.now_resistance) / this.RESITANCE_REQUIRE
@@ -304,14 +314,14 @@ class Game {
   getInfectTip(percent) {
     if (this.debug) return (percent * 100).toFixed(2) + "%";
     if (this.protectStudyCount <= 5) {
-      if (percent < 0.15) return "极低";
-      if (percent < 0.3) return "低";
-      if (percent < 0.6) return "中";
-      if (percent < 0.85) return "高";
+      if (percent < 0.05) return "极低";
+      if (percent < 0.2) return "低";
+      if (percent < 0.4) return "中";
+      if (percent < 0.6) return "高";
       else return "极高";
     }
     if (this.protectStudyCount <= 10)
-      return "大约" + Math.round(percent * 20) * 5 + "%";
+      return "大约" + Math.ceil(percent * 20) * 5 + "%";
     return Math.round(percent * 100) + "%";
   }
 
@@ -473,7 +483,7 @@ class Game {
 
     this.checkButtonStat();
 
-    if (this.debug) console.log(this);
+    // if (this.debug) console.log(this);
   }
 
   afterAction(getInfected) {
@@ -490,6 +500,7 @@ class Game {
 
   checkInfected(p) {
     let t = Math.random();
+    if (this.debug) console.log("t,p " + t.toFixed(2) + "," + p.toFixed(2));
     if (t <= p) return true;
     return false;
   }

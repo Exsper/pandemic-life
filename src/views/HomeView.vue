@@ -16,7 +16,7 @@ function start() {
     </p>
     <br />
     <br />
-    <p class="small">
+    <p class="small gray">
       本游戏纯属虚构，与现实中的环境、人物、事件、团体没有任何关系
       <br />
       如有雷同，纯属巧合
@@ -25,6 +25,9 @@ function start() {
       <br />
       并非科学，切勿当真
     </p>
+    <br />
+    <br />
+    <p class="small">移动端请切换为横屏</p>
     <br />
     <el-button type="primary" size="large" @click="start">开始游戏</el-button>
   </div>
@@ -39,8 +42,11 @@ function start() {
   font-size: 24px;
 }
 
+.gray {
+  color: gray;
+}
+
 .small {
   font-size: 18px;
-  color: gray;
 }
 </style>
